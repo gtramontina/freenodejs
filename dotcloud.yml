@@ -1,4 +1,6 @@
 www:
   type: nodejs
+index:
+  type: nodejs
 data:
   type: redis
