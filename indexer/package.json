@@ -1,6 +1,6 @@
 {
   "author": "Guilherme J. Tramontina <guilherme.tramontina@gmail.com> (http://about.me/gtramontina)",
-  "name": "freenodejs indexer",
+  "name": "freenodejs-indexer",
   "description": "Indexes all nodejs.debuggable.com logs",
   "version": "0.1.0",
   "repository": {
@@ -11,6 +11,7 @@
     "node": ">=v0.4.7"
   },
   "dependencies": {
+    "superagent": ">=0.0.1",
     "reds": "0.1.0"
   },
   "devDependencies": {}
