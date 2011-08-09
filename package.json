@@ -8,7 +8,7 @@
   },
   "main": "server.js",
   "engines": {
-    "node": "~v0.4.9"
+    "node": ">=v0.4.7"
   },
   "dependencies": {
     "reds": "0.1.0"
