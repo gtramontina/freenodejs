@@ -1,0 +1,17 @@
+{
+  "author": "Guilherme J. Tramontina <guilherme.tramontina@gmail.com> (http://about.me/gtramontina)",
+  "name": "freenodejs",
+  "description": "Search on #nodejs logs",
+  "version": "0.1.0",
+  "repository": {
+    "url": ""
+  },
+  "main": "server.js",
+  "engines": {
+    "node": "~v0.4.9"
+  },
+  "dependencies": {
+    "reds": "0.1.0"
+  },
+  "devDependencies": {}
+}
