@@ -7,18 +7,20 @@ var logs = fileSystem.readFileSync(__dirname+'/logs', 'utf8').split('\n');
 
 var stripHTMLTags = function(html) {
   return html.replace(/(<([^>]+)>)/ig, '');
-}
+};
 
 var indexLogs = function(client) {
   var search = reds.createSearch('nodejs_logs');
-  logs.forEach(function(log, index) {
-    console.log('Indexing '+log+' ...');
+  logs.forEach(function(log) {
     agent.get(log, function(error, response, body) {
       if (error) throw error;
-      search.index(stripHTMLTags(body), index);
+      var lines = stripHTMLTags(body).split('\n')
+      lines.forEach(function(line, index) {
+        search.index(line, log+'#'+index);
+      });
+      console.log('Indexed '+log+':'+lines.length);
     });
   });
-  console.log('DONE!');
 };
 
 console.log('Starting...');
