@@ -8,7 +8,6 @@ var fs = require('fs');
 //var urls = fs.readFileSync(__dirname + '/urls', 'utf8').split('\n');
 var urls = [ '1', '2' ];
 
-var search = reds.createSearch('nodejs_logs')
 var client = redis.createClient(
   process.env.DOTCLOUD_DATA_REDIS_PORT,
   process.env.DOTCLOUD_DATA_REDIS_HOST
@@ -23,6 +22,7 @@ client.auth(
 );
 
 var createServer = function() {
+  var search = reds.createSearch('nodejs_logs')
   http.createServer(function(request, response){
     var url = parse(request.url)
     var query = qs.parse(url.query);
