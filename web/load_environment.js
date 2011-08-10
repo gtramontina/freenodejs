@@ -2,7 +2,7 @@ var fileSystem = require('fs');
 var environmentFile = '/home/dotcloud/environment.json';
 
 var environment = JSON.parse(fileSystem.readFileSync(environmentFile));
-environment.forEach(function(variable) {
+for (variable in environment) {
   console.log('Setting '+variable+'...');
   process.env[variable] = environment[variable];
 });
