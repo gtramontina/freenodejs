@@ -1,65 +1,67 @@
-var http = require('http');
+var express = require('express');
+var agent = require('superagent');
+var io = require('socket.io');
 var reds = require('reds');
 var redis = require('redis');
-var parse = require('url').parse;
-var agent = require('superagent');
-var qs = require('querystring');
-var fs = require('fs');
 var search;
 
 var stripHTMLTags = function(html) {
   return html.replace(/(<([^>]+)>)/ig, '');
 };
 
-var handleSearchRequest = function(query, response) {
-  search.query(query.q, function(error, indexes) {
-    var json = JSON.stringify(indexes.map(function(index) {
-      var values = index.split('#');
-      return { log: values[0], line: values[1] };
-    }));
-    response.setHeader('Content-Type', 'application/json');
-    response.setHeader('Content-Length', json.length);
-    response.end(json);
-  }, 'union');
-};
+var app = express.createServer();
+app.configure(function() {
+  app.set('views', __dirname+'/public');
+  app.set('view options', {layout: false});
+  app.use(express.bodyParser());
+  app.use(express.static(__dirname+'/public'));
+  app.register('.html', {
+    compile: function(string, _) {
+      return function(_) { return string; };
+    }
+  });
+});
 
-var handleFetchRequest = function(query, response) {
-  agent.get(query.log, function(error, _, body) {
-    if (error) throw error;
-    var from = query.line - query.surrounding > 0 ? query.line-query.surrounding : 0;
-    var lines = 2*query.surrounding + 1;
-    body = JSON.stringify(stripHTMLTags(body).split('\n').splice(from, lines));
-    response.setHeader('Content-Type', 'application/json');
-    response.setHeader('Content-Type', body.length);
-    response.end(body);
+app.get('/', function(request, response) { response.render('index.html'); });
+
+var listenOnEvents = function() {
+  io.sockets.on('connection', function(socket) {
+    
+    socket.on('search', function(term, results_cb) {
+      search.query(term, function(_, indexes) {
+        var results = [];
+        indexes.forEach(function(index) {
+          var split = index.split('#');
+          results.push({ log: split[0], line: split[1] });
+        });
+        results_cb(results);
+      }, 'union');
+    });
+
+    socket.on('fetch', function(params, logLines_cb) {
+      var log = params.log;
+      var line = params.line;
+      var surrounding = params.surroundingLines;
+
+      agent.get(log, function(_, __, body) {
+        var from = line - surrounding > 0 ? line-surrounding : 0;
+        var totalLines = 2*surrounding + 1;
+        var lines = stripHTMLTags(body).split('\n').splice(from, totalLines)
+        logLines_cb(lines);
+      });
+    });
   });
 };
 
-var renderSearchForm = function(response) {
-  response.setHeader('Content-Type', 'text/html');
-  fs.readFile(__dirname + '/public/form.html', 'utf8', function(error, buffer) {
-    response.end(buffer);
-  });
-};
-
-var handleRequest = function(request, response) {
-  var url = parse(request.url);
-  var query = qs.parse(url.query);
-  switch (url.pathname) {
-    case '/search': handleSearchRequest(query, response); break;
-    case '/fetch' : handleFetchRequest(query, response); break;
-    default: renderSearchForm(response); break;
-  }
-};
-
-var client = redis.createClient(
+var redisClient = redis.createClient(
   process.env.DOTCLOUD_DATA_REDIS_PORT,
   process.env.DOTCLOUD_DATA_REDIS_HOST
 );
 
-client.auth(process.env.DOTCLOUD_DATA_REDIS_PASSWORD, function() {
-    reds.client = client;
-    search = reds.createSearch('nodejs_logs');
-    http.createServer(handleRequest).listen(8080);
-  }
-);
+redisClient.auth(process.env.DOTCLOUD_DATA_REDIS_PASSWORD, function() {
+  reds.client = redisClient;
+  search = reds.createSearch('nodejs_logs');
+  app.listen(8080);
+  io = io.listen(app);
+  listenOnEvents();
+});

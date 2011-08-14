@@ -1,0 +1,44 @@
+<html>
+<head>
+  <title>freenode.js</title>
+  <link rel="stylesheet" href="/index.css">
+
+  <script src="http://code.jquery.com/jquery-1.6.2.js"></script>
+  <script src="https://raw.github.com/visionmedia/caustic/master/lib/events.js"></script>
+  <script src="https://raw.github.com/visionmedia/caustic/master/lib/caustic.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/index.js"></script>
+</head>
+<body>
+    <div id="header">
+      <div id="logo">
+        <h1>freenode.js</h1>
+        <h2>Search on #Node.js logs</h2>
+      </div>
+
+      <div id="searchBox">
+        <input id="search" type="text" placeholder="Search..." autocomplete="off" />
+        <input id="surroundingLines" type="range" min="0" max="5" value="2" />
+        <span id="surroundingLinesDisplay">2</span>
+      </div>
+
+      <div id="info">
+        <p>Powered by:</p>
+        <p>Node.js, Express, Socket.io, Reds, Superagent</p>
+      </div>
+    </div>
+    <ul id="results"></ul>
+
+    <!-- Templates -->
+    <script type="text/template" id="entry-template">
+      <div class="entry">
+        <span class="log"></span>
+        <ul class="lines"></ul>
+      </div>
+    </script>
+
+    <script type="text/template" id="line-template">
+      <li><span class="line"></span></li>
+    </script>
+</body>
+</html>

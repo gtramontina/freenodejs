@@ -14,6 +14,7 @@
     "express": ">=2.4.4",
     "superagent": ">=0.0.1",
     "redis": "0.6.7",
+    "socket.io": ">=0.7.8",
     "reds": "0.1.0"
   },
   "devDependencies": {}

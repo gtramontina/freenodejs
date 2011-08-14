@@ -1,0 +1,104 @@
+@import url(http://fonts.googleapis.com/css?family=Special+Elite);
+@import url(http://fonts.googleapis.com/css?family=Syncopate);
+@font-face { font-family: 'Monaco'; src: url('monaco.ttf'); } 
+
+#header {
+  position: fixed;
+  background-color: white;
+  box-shadow: 0 15px 20px white;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+}
+
+#logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+}
+
+#logo h1 {
+  font-family: 'Special Elite';
+  margin: 15px;
+  font-size: 2.4em;
+}
+
+#logo h2 {
+  font-family: 'Syncopate';
+  font-size: 0.6em;
+  margin-top: -23px;
+  margin-left: 21px;;
+}
+
+#searchBox {
+  font-family: helvetica;
+  position: absolute;
+  left: 250px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 12px;
+  right: 250px;
+  height: 100%;
+}
+
+#search {
+  width: 100%;
+  border: 5px solid transparent;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background-image: url('search.png');
+  background-repeat: no-repeat;
+  background-position: 0 7px;
+  padding-left: 25px;
+  font-size: 25px;
+  padding-top: 5px;
+  padding-bottom: 0;
+  color: gray;
+  outline: none;
+}
+
+#info {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: helvetica;
+  font-size: 10px;
+  width: 250px;
+  height: 100%;
+}
+
+#results {
+  margin-top: 125px;
+}
+
+.entry {
+  font-family: 'Monaco';
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 5px;
+  margin: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+
+.entry .lines {
+  padding: 0;
+  font-size: 12px;
+  color: gray;
+  list-style: none;
+  padding: 5px;
+}
+
+.entry .lines li:hover {
+  color: black;
+}
+
+.entry .log {
+  font-size: 15px;
+  color: black;
+  padding: 10px;
+  display: block; 
+}
