@@ -43,15 +43,30 @@ var listenOnEvents = function() {
       var log = params.log;
       var line = params.line;
       var surrounding = params.surroundingLines;
-
-      agent.get(log, function(_, __, body) {
-        var from = line - surrounding > 0 ? line-surrounding : 0;
-        var totalLines = 2*surrounding + 1;
-        var lines = stripHTMLTags(body).split('\n').splice(from, totalLines)
-        logLines_cb(lines);
-      });
+      fetch(log, line, surrounding, logLines_cb);
     });
   });
+};
+
+var maxRequests = 20;
+var requestCount = 0;
+var doFetch = function(log, line, surrounding, logLines_cb) {
+  requestCount++;
+  agent.get(log, function(_, __, body) {
+    var from = line - surrounding > 0 ? line-surrounding : 0;
+    var totalLines = 2*surrounding + 1;
+    var lines = stripHTMLTags(body).split('\n').splice(from, totalLines);
+    requestCount--;
+    logLines_cb(lines);
+  });
+}
+
+var fetch = function(log, line, surrounding, logLines_cb) {
+  var t = setInterval(function() {
+    if (requestCount > maxRequests) return;
+    doFetch(log, line, surrounding, logLines_cb);
+    clearInterval(t);
+  }, 100);
 };
 
 var redisClient = redis.createClient(
@@ -60,10 +75,12 @@ var redisClient = redis.createClient(
 );
 
 redisClient.auth(process.env.DOTCLOUD_DATA_REDIS_PASSWORD, function() {
-  indexer.go(redisClient, 'nodejs_logs');
   reds.client = redisClient;
+  //indexer.go(reds, 'nodejs_logs');
+  
   search = reds.createSearch('nodejs_logs');
   app.listen(8080);
   io = io.listen(app);
+  io.set('log level', 2);
   listenOnEvents();
 });
