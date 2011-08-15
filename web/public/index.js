@@ -1,13 +1,20 @@
 var freenodejs = function(socket) {
+  var dom = {
+    results: $('#results'),
+    surroundingLines: $('#surroundingLines'),
+    surroundingLinesDisplay: $('#surroundingLinesDisplay'),
+    search: $('#search')
+  };
   var renderResults = function(results) {
-    $('#results').empty();
+    dom.results.empty();
     results.forEach(function(result) {
       var entry = View('entry');
       entry.log(result.log);
-      entry.appendTo('#results');
+      entry.appendTo(dom.results);
 
-      var surroundingLines = $('#surroundingLines').attr('value');
+      var surroundingLines = dom.surroundingLines.attr('value');
       fetch(result.log, result.line, surroundingLines, function(lines) {
+        entry.searching().remove();
         lines.forEach(function(line) {
           entry.lines.add(View('line').line(line));
         });
@@ -15,7 +22,7 @@ var freenodejs = function(socket) {
     });
   };
 
-  var search = function(term, surroundingLines) {
+  var doSearch = function(term, surroundingLines) {
     socket.emit('search', term, renderResults);
   };
 
@@ -23,13 +30,21 @@ var freenodejs = function(socket) {
     socket.emit('fetch', {log: log, line: line, surroundingLines: surroundingLines}, renderLogLines);
   };
 
-  $('#search').keyup(function() {
-    var term = this.value.trim();
-    if(term) search(term);
+
+  var lastTerm;
+  var search = function(term) {
+    var term = term.trim();
+    if(!term || lastTerm == term) return;
+    doSearch(lastTerm = term);
+  };
+
+  dom.search.keyup(function() {
+    search(this.value);
   });
 
-  $('#surroundingLines').change(function() {
-    $('#surroundingLinesDisplay').text(this.value);
+  dom.surroundingLines.change(function() {
+    dom.surroundingLinesDisplay.text(this.value);
+    doSearch(dom.search.val());
   });
 };
 

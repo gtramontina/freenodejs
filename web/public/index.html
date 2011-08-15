@@ -18,13 +18,26 @@
 
       <div id="searchBox">
         <input id="search" type="text" placeholder="Search..." autocomplete="off" />
-        <input id="surroundingLines" type="range" min="0" max="5" value="2" />
-        <span id="surroundingLinesDisplay">2</span>
+        <div id="surroundingLinesBox">
+          <label for="surroundingLines">Number of surrounding lines: </label>
+          <span id="surroundingLinesDisplay">2</span>
+          <input id="surroundingLines" type="range" min="0" max="5" value="2" />
+        </div>
       </div>
 
       <div id="info">
-        <p>Powered by:</p>
-        <p>Node.js, Express, Socket.io, Reds, Superagent</p>
+        <a href="http://github.com/gtramontina/freenodejs">
+          <img src="github.png" alt="Fork me on GitHub" />
+        </a>
+        <p>
+          Brought to you by <a href="http://twitter.com/gtramontina">@gtramontina</a><br>
+          <a href="http://nodejs.org/">Node.js</a>
+          <a href="http://expressjs.com/">Express</a>
+          <a href="http://socket.io/">Socket.io</a>
+          <a href="http://github.com/visionmedia/reds">Reds</a>
+          <a href="http://visionmedia.github.com/superagent/">Superagent</a>
+          <a href="http://visionmedia.github.com/caustic/">Caustic</a>
+        </p>
       </div>
     </div>
     <ul id="results"></ul>
@@ -33,6 +46,7 @@
     <script type="text/template" id="entry-template">
       <div class="entry">
         <span class="log"></span>
+        <div class="searching"></div>
         <ul class="lines"></ul>
       </div>
     </script>
