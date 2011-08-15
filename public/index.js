@@ -13,10 +13,12 @@ var freenodejs = function(socket) {
       entry.appendTo(dom.results);
 
       var surroundingLines = dom.surroundingLines.attr('value');
-      fetch(result.log, result.line, surroundingLines, function(lines) {
-        entry.searching().remove();
-        lines.forEach(function(line) {
-          entry.lines.add(View('line').line(line));
+      entry.el.appear({
+        fetch(result.log, result.line, surroundingLines, function(lines) {
+          entry.searching().remove();
+          lines.forEach(function(line) {
+            entry.lines.add(View('line').line(line));
+          });
         });
       });
     });
