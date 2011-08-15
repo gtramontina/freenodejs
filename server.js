@@ -3,6 +3,7 @@ var agent = require('superagent');
 var io = require('socket.io');
 var reds = require('reds');
 var redis = require('redis');
+var indexer = require('./indexer');
 var search;
 
 var stripHTMLTags = function(html) {
@@ -59,6 +60,7 @@ var redisClient = redis.createClient(
 );
 
 redisClient.auth(process.env.DOTCLOUD_DATA_REDIS_PASSWORD, function() {
+  indexer.go(redisClient, 'nodejs_logs');
   reds.client = redisClient;
   search = reds.createSearch('nodejs_logs');
   app.listen(8080);
