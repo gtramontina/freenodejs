@@ -79,7 +79,7 @@ redisClient.auth(process.env.DOTCLOUD_DATA_REDIS_PASSWORD, function() {
   indexer.go(reds, 'nodejs_logs');
   
   search = reds.createSearch('nodejs_logs');
-  app.listen(8080);
+  app.listen(process.env.app_port || 8080);
   io = io.listen(app);
   io.set('log level', 2);
   listenOnEvents();
