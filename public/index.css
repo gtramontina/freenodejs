@@ -69,6 +69,12 @@
   outline: none;
 }
 
+#search.searching {
+  background-image: url('searching.gif');
+  background-repeat: no-repeat;
+  background-position: 0 7px;
+}
+
 #info {
   position: absolute;
   top: 0;

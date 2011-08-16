@@ -10,6 +10,7 @@ var freenodejs = function(socket) {
   };
   var renderResults = function(results) {
     dom.results.empty();
+    dom.search.removeClass('searching');
     if (results.length > MAX_NUMBER_OF_RESULTS) {
       dom.searchMessage.addClass('error');
       dom.searchMessage.text('Your search returned more than ' + MAX_NUMBER_OF_RESULTS + ' results. Please be more specific.');
@@ -34,6 +35,7 @@ var freenodejs = function(socket) {
   };
 
   var doSearch = function(term, surroundingLines) {
+    dom.search.addClass('searching');
     socket.emit('search', term, renderResults);
   };
 
