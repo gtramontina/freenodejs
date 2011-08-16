@@ -132,3 +132,11 @@
   width: 20px;
   height: 20px;
 }
+
+#searchMessage {
+  font-size: 12px;
+}
+
+.error {
+  color: red;  
+}

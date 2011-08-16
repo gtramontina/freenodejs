@@ -76,7 +76,7 @@ var redisClient = redis.createClient(
 
 redisClient.auth(process.env.DOTCLOUD_DATA_REDIS_PASSWORD, function() {
   reds.client = redisClient;
-  //indexer.go(reds, 'nodejs_logs');
+  indexer.go(reds, 'nodejs_logs');
   
   search = reds.createSearch('nodejs_logs');
   app.listen(8080);

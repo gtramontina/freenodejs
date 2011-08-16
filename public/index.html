@@ -7,7 +7,6 @@
   <script src="https://raw.github.com/visionmedia/caustic/master/lib/events.js"></script>
   <script src="https://raw.github.com/visionmedia/caustic/master/lib/caustic.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/jquery.appear-1.1.1.min.js"></script>
   <script src="/index.js"></script>
 </head>
 <body>
@@ -19,6 +18,7 @@
 
       <div id="searchBox">
         <input id="search" type="text" placeholder="Search..." autocomplete="off" />
+        <span id="searchMessage"></span>
         <div id="surroundingLinesBox">
           <label for="surroundingLines">Number of surrounding lines: </label>
           <span id="surroundingLinesDisplay">2</span>

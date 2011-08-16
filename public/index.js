@@ -1,26 +1,35 @@
 var freenodejs = function(socket) {
+  var MAX_NUMBER_OF_RESULTS = 2000;
+
   var dom = {
     results: $('#results'),
+    searchMessage: $('#searchMessage'),
     surroundingLines: $('#surroundingLines'),
     surroundingLinesDisplay: $('#surroundingLinesDisplay'),
     search: $('#search')
   };
   var renderResults = function(results) {
     dom.results.empty();
-    results.forEach(function(result) {
+    if (results.length > MAX_NUMBER_OF_RESULTS) {
+      dom.searchMessage.addClass('error');
+      dom.searchMessage.text('Your search returned more than ' + MAX_NUMBER_OF_RESULTS + ' results. Please be more specific.');
+      return;
+    }
+
+    dom.searchMessage.removeClass('error');
+    dom.searchMessage.text('Results: '+results.length);
+    $(results).each(function(index, result) {
       var entry = View('entry');
       entry.log(result.log);
-      entry.appendTo(dom.results);
-
       var surroundingLines = dom.surroundingLines.attr('value');
-      entry.el.appear({
-        fetch(result.log, result.line, surroundingLines, function(lines) {
+      
+      fetch(result.log, result.line, surroundingLines, function(lines) {
           entry.searching().remove();
-          lines.forEach(function(line) {
-            entry.lines.add(View('line').line(line));
-          });
+        lines.forEach(function(line) {
+          entry.lines.add(View('line').line(line));
         });
-      });
+      });        
+      entry.appendTo(dom.results);
     });
   };
 
@@ -40,8 +49,8 @@ var freenodejs = function(socket) {
     doSearch(lastTerm = term);
   };
 
-  dom.search.keyup(function() {
-    search(this.value);
+  dom.search.keyup(function(event) {
+    if(event.keyCode == '13') search(this.value);
   });
 
   dom.surroundingLines.change(function() {
