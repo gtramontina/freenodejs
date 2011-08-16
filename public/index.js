@@ -50,7 +50,7 @@ var freenodejs = function(socket) {
   };
 
   dom.search.keyup(function(event) {
-    if(event.keyCode == '13') search(this.value);
+    search(this.value);
   });
 
   dom.surroundingLines.change(function() {

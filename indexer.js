@@ -72,5 +72,5 @@ exports.go = function(reds, namespace) {
   redsSearch = reds.createSearch(namespace);
 
   lookForNewLogFiles();
-  //setInterval(lookForNewLogFiles, 15000);
+  //setInterval(lookForNewLogFiles, 18000000); // 5 hours
 };
