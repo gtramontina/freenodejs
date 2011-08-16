@@ -4,7 +4,7 @@
   "description": "Search on #nodejs logs",
   "version": "0.1.0",
   "repository": {
-    "url": ""
+    "url": "http://github.com/gtramontina/freenodejs"
   },
   "main": "server.js",
   "engines": {

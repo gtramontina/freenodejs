@@ -1,8 +1,2 @@
-www:
-  type: nodejs
-  approot: web
-index:
-  type: nodejs
-  approot: indexer
 data:
   type: redis
