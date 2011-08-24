@@ -22,9 +22,11 @@ var index = function(logs) {
       agent.get(log, function(error, response, body) {
         if (error) throw error;
         var lines = stripHTMLTags(body).split('\n')
-        lines.forEach(function(line, index) { redsSearch.index(line, log+'#'+index); });
+        lines.forEach(function(line, index) {
+          redsSearch.index(line, log+'#'+index);
+        });
         redisClient.set(log, true, function() {
-          console.log('# Indexed '+log+': '+lines.length+'.');
+          console.log('# Indexed '+log+': '+lines.length+' lines.');
           numberOfRequests--;
         });
         redisClient.save();
